@@ -1,5 +1,5 @@
 # Directories for logging and output files
 
-output = '../output_files'
-input = '../input_files'
-log = '../logs'
+outputs = '../output_files'
+inputs = '../input_files'
+logs = '../logs'

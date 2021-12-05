@@ -3,7 +3,7 @@ import os
 
 def test_anime():
     try:
-        os.system(f'cmd /c "mkdir {conf.log}"')
+        os.mkdir(conf.log)
     except Exception as exc:
         print(exc)
     assert 1 == 1
