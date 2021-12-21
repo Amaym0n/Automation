@@ -10,7 +10,7 @@ from src.logger import Logger
 @pytest.fixture(scope='session', autouse=True)
 def main_fixture(request):
 
-    LOGGER = Logger(request.get_atr('--logfile'))
+    LOGGER = Logger()
     LOGGER.report_info("Logger was created")
 
     try:
@@ -29,4 +29,5 @@ def main_fixture(request):
 
 @pytest.fixture(scope='session', autouse=True)
 def params_parser(request):
-    pytest.addoption("--logfile")
+    ...
+    #pytest.addoption("--logfile")
