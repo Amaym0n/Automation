@@ -1,9 +1,10 @@
 from configs import tests as conf
 import os
 
-def test_anime():
-    try:
-        os.mkdir(conf.log)
-    except Exception as exc:
-        print(exc)
-    assert 1 == 1
+class Test_API:
+
+    def test_1_1(self):
+        ...
+
+    def test_2_1(self):
+        ...
