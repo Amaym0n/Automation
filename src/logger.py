@@ -1,3 +1,4 @@
+from configs import tests as conf
 import logging
 
 
