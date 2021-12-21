@@ -29,4 +29,4 @@ def main_fixture(request):
 
 @pytest.fixture(scope='session', autouse=True)
 def params_parser(request):
-    ...
+    pytest.addoption("--logfile")
