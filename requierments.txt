@@ -3,4 +3,3 @@
 pytest==6.2.5
 selenium==4.1.0
 requests==2.26.0
-websocket-client==1.2.1
