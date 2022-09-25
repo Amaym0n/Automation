@@ -1,0 +1,26 @@
+{"HTTPStatus.OK": {
+  "type": "object",
+  "properties": {
+    "access_token": {"type": "string"},
+    "detail": {"type": "string"},
+    "refresh_token": {"type": "string"},
+    "token_type": {"type": "string"}
+  },
+  "required": [
+    "access_token",
+    "detail",
+    "refresh_token",
+    "token_type"
+  ],
+  "additionalProperties": false
+},
+"HTTPStatus.UNAUTHORIZED": {
+  "type": "object",
+  "properties": {
+    "detail": {"type": "string"}
+  },
+  "required": [
+    "detail"
+  ],
+  "additionalProperties": false
+}}

@@ -1,0 +1,7 @@
+{
+"protocol": "https://",
+"url": "stand1.ru",
+"port": "443",
+"db_host": "ip.ip.ip.ip",
+"db_port": 5082,
+"connection_string": {"username": "username", "password": "password", "db": "stand1", "host": "ip.ip.ip.ip", "port": "5082"}}
