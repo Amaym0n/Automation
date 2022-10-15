@@ -3,6 +3,7 @@ import os
 from pathlib import Path
 from typing import Any
 
+import allure
 import pytest
 from _pytest.fixtures import SubRequest
 
@@ -35,6 +36,7 @@ def conf(request: SubRequest) -> dict[str, Any]:
 
 def create_path_to_file(file_name: str, custom_path: str = None) -> str:
     """ Динамическое создание пути к указанному файлу путем поиска его в переданном пути или в корне проекта """
-    path = custom_path if custom_path else PROJECT_ROOT
-    for path in Path(path).rglob(pattern=file_name):
-        return str(path)
+    with allure.step(f'Создание пути для файла "{file_name}"'):
+        path = custom_path if custom_path else PROJECT_ROOT
+        for path in Path(path).rglob(pattern=file_name):
+            return str(path)

@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import json
 from typing import Any, Optional
 
 import allure
@@ -16,24 +15,25 @@ class DBClient:
         self.connection: Optional[connection] = None
         self.cursor: Optional[cursor] = None
 
-    def get_first_value(self, query: str) -> tuple[Any]:
+    def get_first_value(self, query: str) -> Any:
         """ Получить первое значение по переданному SQL-запросу """
         with allure.step('Получение первого значения из переданного запроса'):
-            self.cursor.query(query)
-            return self.cursor.fetchall()[0]
+            self.cursor.execute(query=query)
+            if not (result := self.cursor.fetchone()):
+                return None
+            return result[0]
 
     def get_list(self, query: str) -> list[Any]:
         """ Получение списка по переданному SQL-запросу """
         with allure.step('Получение списка из переданного запроса'):
-            self.cursor.query(query)
+            self.cursor.execute(query=query)
             return list(self.cursor.fetchone())
 
-    def get_json(self, query: str) -> dict[str, Any]:
-        """ Получение JSON по переданному SQL-запросу """
-        # TODO: Необходимо исправить реализацию. Так как не открывается BLOB
-        with allure.step('Получение JSON из БД таблицы'):
-            self.cursor.query(query=query)
-            return json.loads(self.cursor.fetchone()[0])
+    def get_first_row(self, query: str) -> tuple[Any]:
+        """ Получение первой строки по переданному SQL-запросу """
+        with allure.step('Получение первой строки для переданного запроса'):
+            self.cursor.execute(query=query)
+            return self.cursor.fetchone()
 
     def __enter__(self) -> DBClient:
         self.connection = psycopg2.connect(database=self.connection_string['db'],
