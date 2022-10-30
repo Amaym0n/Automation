@@ -16,7 +16,6 @@ class User(Enum):
     """ Пользователи для взаимодействия с сервисом """
 
     SUPERVISOR: User = ('supervisor@example.com', 'supervisor')
-    WENDI_USER: User = ('test@uktlab.ru', 'QLeBUmOxvE')
 
     def get_username(self) -> str:
         return self.value[0]

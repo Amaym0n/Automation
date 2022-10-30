@@ -14,8 +14,6 @@ class Headers(Enum):
 
     NONE_TYPE: Headers = None
     JSON_TYPE: Headers = {'Content-Type': 'application/json'}
-    DATA_TYPE: Headers = {"Content-Type": "application/x-www-form-urlencoded"}
-    MULTIPART_TYPE: Headers = {'Content-Type': 'multipart/form-data'}
     JWT_TYPE: Headers = {}
 
     def jwt_headers(self, jwt_token: str) -> Headers:
@@ -63,9 +61,20 @@ class RestClient:
             self._check_status_code(response_status=response, expected_status_code=status_code)
         return response
 
+    def put(self, path: str, headers: Headers, params: Optional[dict] = None, data: Any = None,
+            json: Optional[dict] = None, status_code: int = HTTPStatus.OK) -> Response:
+        """ Формирование и отправка PUT-запроса """
+        with allure.step(title=f'POST-запрос по url -> {self.basic_path}{path}'):
+            response = requests.put(url=f'{self.basic_path}{path}', params=params, data=data, json=json,
+                                    headers=headers, cookies=self.cookies, timeout=300,
+                                    verify=False)
+            self._check_status_code(response_status=response, expected_status_code=status_code)
+        return response
+
     @staticmethod
     def _check_status_code(response_status: Response, expected_status_code: int = HTTPStatus.OK) -> None:
         with allure.step(title='Проверка статуса из полученного response'):
             assert response_status.status_code == expected_status_code, \
                 f'Полученный REST-запросом статус код {response_status.status_code} ' \
-                f'не соответствует ожидаемому {expected_status_code}'
+                f'не соответствует ожидаемому {expected_status_code}\n' \
+                f'Полученное тело ответа -> {response_status.content}'
