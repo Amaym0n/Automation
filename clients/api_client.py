@@ -49,11 +49,11 @@ def allure_listener(response: Response, *args: Any, **kwargs: Any) -> None:
 
 class ApiClient:
     def __init__(
-        self,
-        config: dict[str, Any],
-        cookies: dict[str, str],
-        ssl: bool = False,
-        base_url: str | None = None,
+            self,
+            config: dict[str, Any],
+            cookies: dict[str, str],
+            ssl: bool = False,
+            base_url: str | None = None,
     ) -> None:
         self.base_url = base_url or (
             f'{config["protocol"]}{config["url"]}'
@@ -77,14 +77,14 @@ class ApiClient:
 
     @timeout_logging
     def get(
-        self,
-        path: str,
-        headers: Headers | None = None,
-        params: dict | None = None,
-        time_out: int = 180,
-        status_code: int | None = None,
-        cert: tuple[str, str] | None = None,
-        allow_redirects: bool = True,
+            self,
+            path: str,
+            headers: Headers | None = None,
+            params: dict | None = None,
+            time_out: int = 180,
+            status_code: int | None = None,
+            cert: tuple[str, str] | None = None,
+            allow_redirects: bool = True,
     ) -> Response:
         self.latest_request = requests.get(
             url=f"{self.base_url}{path}",
@@ -102,17 +102,17 @@ class ApiClient:
 
     @timeout_logging
     def post(
-        self,
-        path: str,
-        headers: Headers,
-        params: dict | None = None,
-        files: dict | list | None = None,
-        data: Any = None,
-        json: dict | None = None,
-        status_code: int | None = None,
-        time_out: int = 600,
-        cert: tuple[str, str] | None = None,
-        allow_redirects: bool = True,
+            self,
+            path: str,
+            headers: Headers,
+            params: dict | None = None,
+            files: dict | list | None = None,
+            data: Any = None,
+            json: dict | None = None,
+            status_code: int | None = None,
+            time_out: int = 600,
+            cert: tuple[str, str] | None = None,
+            allow_redirects: bool = True,
     ) -> Response:
         self.latest_request = requests.post(
             url=f"{self.base_url}{path}",
@@ -133,12 +133,12 @@ class ApiClient:
 
     @timeout_logging
     def delete(
-        self,
-        path: str,
-        headers: Headers,
-        status_code: int | None = None,
-        time_out: int = 180,
-        cert: tuple[str, str] | None = None,
+            self,
+            path: str,
+            headers: Headers,
+            status_code: int | None = None,
+            time_out: int = 180,
+            cert: tuple[str, str] | None = None,
     ) -> Response:
         self.latest_request = requests.delete(
             url=f"{self.base_url}{path}",
@@ -160,11 +160,11 @@ class ApiClient:
                                                 Message: {self.latest_request.text}."""
             else:
                 assert (
-                    self.latest_request.status_code == status_code
-                ), f"""Wrong status code,
-                                                                       expected: {status_code} ,
-                                                                       received: {self.latest_request.status_code} ,
-                                                                       message: {self.latest_request.text}"""
+                        self.latest_request.status_code == status_code
+                ), f"""Wrong status code, 
+                expected: {status_code}, 
+                received: {self.latest_request.status_code}, 
+                message: {self.latest_request.text}"""
 
 
 class Headers(Enum):
