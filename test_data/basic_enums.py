@@ -13,7 +13,7 @@ class FullEnum(Enum):
 
 
 class User(Enum):
-    """ Пользователи для взаимодействия с сервисом """
+    """ Users enum that contains all users for tests """
 
     SUPERVISOR: User = ('supervisor@example.com', 'supervisor')
 
