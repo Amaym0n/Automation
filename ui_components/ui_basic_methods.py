@@ -1,4 +1,5 @@
-from typing import Union, Optional
+from typing import Optional
+from typing import Union
 
 import allure
 from selenium.webdriver.chrome.webdriver import WebDriver

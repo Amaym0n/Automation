@@ -161,9 +161,9 @@ class ApiClient:
             else:
                 assert (
                         self.latest_request.status_code == status_code
-                ), f"""Wrong status code, 
-                expected: {status_code}, 
-                received: {self.latest_request.status_code}, 
+                ), f"""Wrong status code,
+                expected: {status_code},
+                received: {self.latest_request.status_code},
                 message: {self.latest_request.text}"""
 
 

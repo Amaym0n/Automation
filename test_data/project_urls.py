@@ -1,6 +1,7 @@
 from __future__ import annotations
 
-from enum import unique, Enum
+from enum import Enum
+from enum import unique
 
 
 class UrlsEnum(Enum):

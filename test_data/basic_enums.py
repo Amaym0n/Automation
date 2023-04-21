@@ -1,13 +1,12 @@
 from __future__ import annotations
 
 from enum import Enum
-from typing import Union
 
 
 class FullEnum(Enum):
     """ Enum для получения значений ident, title из переменных """
 
-    def __init__(self, ident: Union[str, int], title: str) -> None:
+    def __init__(self, ident: str | int, title: str) -> None:
         self.ident = ident
         self.title = title
 
