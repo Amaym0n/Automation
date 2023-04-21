@@ -27,16 +27,6 @@ repos:
               - tomli
               - types-pkg_resources
               - exceptiongroup>=1.0.0rc8
-  - repo: https://github.com/psf/black
-    rev: 23.3.0
-    hooks:
-      - id: black
-        args: [ --safe, --quiet ]
-  - repo: https://github.com/asottile/blacken-docs
-    rev: 1.13.0
-    hooks:
-      - id: blacken-docs
-        additional_dependencies: [ black==23.1.0 ]
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.4.0
     hooks:
@@ -46,6 +36,10 @@ repos:
         args: [ --remove ]
       - id: check-yaml
       - id: debug-statements
+      - id: name-tests-test
+      - id: pretty-format-json
+      - id: check-json
+      - id: check-byte-order-marker
         language_version: python3
   - repo: https://github.com/PyCQA/autoflake
     rev: v2.1.0
@@ -60,11 +54,4 @@ repos:
     hooks:
       - id: flake8
         language_version: python3
-        additional_dependencies:
-          - flake8-typing-imports==1.12.0
-          - flake8-docstrings==1.5.0
-  - repo: https://github.com/asottile/setup-cfg-fmt
-    rev: v2.2.0
-    hooks:
-      - id: setup-cfg-fmt
-        args: [ "--max-py-version=3.11", "--include-version-classifiers" ]
+        args: [ "--max-line-length=120" ]
