@@ -8,6 +8,9 @@ import allure
 import requests
 from requests import Response
 
+from basic_helper.object_description import StandConfig
+from clients.auth.jwt_auth import JWTAuth
+
 
 def timeout_logging(func: Callable[..., Any]) -> Callable[..., Any]:
     """Decorator to add requests when request fails due to timeout"""
@@ -48,32 +51,9 @@ def allure_listener(response: Response, *args: Any, **kwargs: Any) -> None:
 
 
 class ApiClient:
-    def __init__(
-            self,
-            config: dict[str, Any],
-            cookies: dict[str, str],
-            ssl: bool = False,
-            base_url: str | None = None,
-    ) -> None:
-        self.base_url = base_url or (
-            f'{config["protocol"]}{config["url"]}'
-            if not ssl
-            else f'{config["protocol_ssl"]}{config["url_ssl"]}'
-        )
-        self.cookies = cookies
-        self.latest_request = None
-
-    @property
-    def post_headers(self) -> Headers:
-        return Headers.JSON_TYPE
-
-    @property
-    def get_headers(self) -> Headers:
-        return Headers.NONE_TYPE
-
-    @property
-    def get_cookies(self) -> dict[str, str]:
-        return self.cookies
+    def __init__(self, config: StandConfig, auth: JWTAuth) -> None:
+        self.base_url = f'{config.protocol}{config.url}'
+        self.auth = auth
 
     @timeout_logging
     def get(
@@ -86,19 +66,18 @@ class ApiClient:
             cert: tuple[str, str] | None = None,
             allow_redirects: bool = True,
     ) -> Response:
-        self.latest_request = requests.get(
+        response = requests.get(
             url=f"{self.base_url}{path}",
-            cookies=self.get_cookies,
             params=params,
-            headers=headers.value if headers else self.get_headers.value,
+            headers=headers.value,
             timeout=time_out,
             verify=False,
             hooks={"response": allure_listener},
             cert=cert,
             allow_redirects=allow_redirects,
         )
-        self.check_status_code(status_code=status_code)
-        return self.latest_request
+        self.check_status_code(response=response, status_code=status_code)
+        return response
 
     @timeout_logging
     def post(
@@ -114,9 +93,8 @@ class ApiClient:
             cert: tuple[str, str] | None = None,
             allow_redirects: bool = True,
     ) -> Response:
-        self.latest_request = requests.post(
+        response = requests.post(
             url=f"{self.base_url}{path}",
-            cookies=self.get_cookies,
             params=params,
             headers=headers.value,
             timeout=time_out,
@@ -128,8 +106,8 @@ class ApiClient:
             hooks={"response": allure_listener},
             cert=cert,
         )
-        self.check_status_code(status_code=status_code)
-        return self.latest_request
+        self.check_status_code(response=response, status_code=status_code)
+        return response
 
     @timeout_logging
     def delete(
@@ -140,31 +118,23 @@ class ApiClient:
             time_out: int = 180,
             cert: tuple[str, str] | None = None,
     ) -> Response:
-        self.latest_request = requests.delete(
+        response = requests.delete(
             url=f"{self.base_url}{path}",
-            cookies=self.get_cookies,
             headers=headers.value,
             timeout=time_out,
             verify=False,
             hooks={"response": allure_listener},
             cert=cert,
         )
-        self.check_status_code(status_code=status_code)
-        return self.latest_request
+        self.check_status_code(response=response, status_code=status_code)
+        return response
 
-    def check_status_code(self, status_code: int | None) -> None:
+    @staticmethod
+    def check_status_code(response: Response, status_code: int) -> None:
         with allure.step("Checking the status of the request code"):
-            if not status_code:
-                assert self.latest_request, f"""An error occurred while executing the request.
-                                                Status code: {self.latest_request.status_code}.
-                                                Message: {self.latest_request.text}."""
-            else:
-                assert (
-                        self.latest_request.status_code == status_code
-                ), f"""Wrong status code,
-                expected: {status_code},
-                received: {self.latest_request.status_code},
-                message: {self.latest_request.text}"""
+            assert response.status_code == status_code, \
+                f"""Wrong status code, expected: {status_code}, received: {response.status_code}, 
+                message: {response.text}"""
 
 
 class Headers(Enum):

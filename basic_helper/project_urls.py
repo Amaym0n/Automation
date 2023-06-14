@@ -5,22 +5,18 @@ from enum import unique
 
 
 class UrlsEnum(Enum):
-    """ Enum для взаимодействия с Urls """
 
     def __init__(self, url: str, description: str) -> None:
         self.url: str = url
         self.description: str = description
 
     def format_url(self, **kwargs) -> str:
-        """ Заполнение вызываемого url'а переданными значениями используя метод .format """
+        """ Format values in url """
         return self.url.format(**kwargs)
 
 
 @unique
 class Urls(UrlsEnum):
-    """ Enum с url'ами проекта """
-
-    # swagger
-    swagger: Urls = ('/docs#', 'Swagger')
+    """ Enum with project urls """
 
     login_for_auth: Urls = ('/api/auth/login', 'Login For Auth')
