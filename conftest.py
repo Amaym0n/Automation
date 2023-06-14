@@ -11,7 +11,7 @@ PROJECT_ROOT: str = os.path.dirname(os.path.abspath(__file__))
 def pytest_addoption(parser: Parser) -> None:
     """ Expected options parser """
     parser.addoption(
-        '--stand', action='store', default='stand1', help='stands: stand1/stand2'
+        '--stand', action='store', default='stand', help='stands: stand/another_stand'
     )
 
 
