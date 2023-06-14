@@ -29,25 +29,25 @@ def timeout_logging(func: Callable[..., Any]) -> Callable[..., Any]:
 
 
 def allure_listener(response: Response, *args: Any, **kwargs: Any) -> None:
-    """Function for logging requests and responses for ApiClient"""
+    """ Function for logging requests and responses for ApiClient """
 
     def formatter(resp: Response) -> tuple[str, str]:
-        """Formatting information for logging"""
+        """ Formatting information for logging """
         req_data = (
-            f"[{resp.request.method}] --> {resp.url} \n" f" headers: {resp.headers}"
+            f'[{resp.request.method}] --> {resp.url} \n' f' headers: {resp.headers}'
         )
-        if resp.request.method == "POST":
-            req_data += f"\n body: {resp.request.body}"
+        if resp.request.method == 'POST':
+            req_data += f'\n body: {resp.request.body}'
         req_message = req_data
         resp_message = (
-            f"status_code: {resp.status_code} \n {req_data} \n Content: \n {resp.text}"
+            f'status_code: {resp.status_code} \n {req_data} \n Content: \n {resp.text}'
         )
         return req_message, resp_message
 
     with allure.step(f"[{response.request.method}] --> {response.url}"):
         req_text, resp_text = formatter(response)
-        allure.attach(req_text, "request", allure.attachment_type.TEXT)
-        allure.attach(resp_text, "response", allure.attachment_type.TEXT)
+        allure.attach(req_text, 'request', allure.attachment_type.TEXT)
+        allure.attach(resp_text, 'response', allure.attachment_type.TEXT)
 
 
 class ApiClient:
@@ -67,12 +67,12 @@ class ApiClient:
             allow_redirects: bool = True,
     ) -> Response:
         response = requests.get(
-            url=f"{self.base_url}{path}",
+            url=f'{self.base_url}{path}',
             params=params,
             headers=headers.value,
             timeout=time_out,
             verify=False,
-            hooks={"response": allure_listener},
+            hooks={'response': allure_listener},
             cert=cert,
             allow_redirects=allow_redirects,
         )
@@ -94,7 +94,7 @@ class ApiClient:
             allow_redirects: bool = True,
     ) -> Response:
         response = requests.post(
-            url=f"{self.base_url}{path}",
+            url=f'{self.base_url}{path}',
             params=params,
             headers=headers.value,
             timeout=time_out,
@@ -103,7 +103,7 @@ class ApiClient:
             json=json,
             verify=False,
             allow_redirects=allow_redirects,
-            hooks={"response": allure_listener},
+            hooks={'response': allure_listener},
             cert=cert,
         )
         self.check_status_code(response=response, status_code=status_code)
@@ -119,11 +119,11 @@ class ApiClient:
             cert: tuple[str, str] | None = None,
     ) -> Response:
         response = requests.delete(
-            url=f"{self.base_url}{path}",
+            url=f'{self.base_url}{path}',
             headers=headers.value,
             timeout=time_out,
             verify=False,
-            hooks={"response": allure_listener},
+            hooks={'response': allure_listener},
             cert=cert,
         )
         self.check_status_code(response=response, status_code=status_code)
@@ -131,7 +131,7 @@ class ApiClient:
 
     @staticmethod
     def check_status_code(response: Response, status_code: int) -> None:
-        with allure.step("Checking the status of the request code"):
+        with allure.step('Checking the status of the request code'):
             assert response.status_code == status_code, \
                 f"""Wrong status code, expected: {status_code}, received: {response.status_code}, 
                 message: {response.text}"""
@@ -139,5 +139,5 @@ class ApiClient:
 
 class Headers(Enum):
     NONE_TYPE = None
-    JSON_TYPE = {"Content-Type": "application/json"}
-    XML_TYPE = {"X-Requested-With": "XMLHttpRequest"}
+    JSON_TYPE = {'Content-Type': 'application/json'}
+    XML_TYPE = {'X-Requested-With': 'XMLHttpRequest'}

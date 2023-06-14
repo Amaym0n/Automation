@@ -32,7 +32,7 @@ def conf(load_env: None, request: SubRequest) -> StandConfig:
         return namedtuple('config', stand_config.keys())(**stand_config)
 
 
-@pytest.fixture(scope="function", autouse=True, name="test_params")
+@pytest.fixture(scope='function', autouse=True, name='test_params')
 def get_test_params_from_parametrize(
         request: SubRequest,
 ) -> dict:
