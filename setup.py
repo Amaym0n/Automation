@@ -4,7 +4,7 @@ setup(
     name='pytemplate',
     version='1.0.0',
     author='David Amaym0n',
-    packages=['pytemplate'],
+    packages=['pytest-template'],
     install_requires=[
         'allure-pytest>=2.13.2',
         'allure-python-commons>=2.13.2',
