@@ -1,5 +1,7 @@
 import requests
 
+from clients.api_client import allure_listener
+
 
 class JWTAuth:
     def __init__(self, token_url: str, username: str, password: str) -> None:
@@ -42,6 +44,6 @@ class JWTAuth:
         response = requests.post(self.token_url, data={
             'username': self.username,
             'password': self.password
-        }, verify=False)
+        }, verify=False, hooks={'response': allure_listener})
         response.raise_for_status()
         return response.json()['access_token']

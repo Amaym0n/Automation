@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "pytest-template"
+authors = ["Amaym0n"]
+version = "0.1.0"
+description = "Template for Autotests core"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+pydantic = ">=2.1.0"
+pytest = ">=7.3.2"
+allure-pytest = ">=2.13.2"
+pre-commit = ">=3.3.3"
+selenium = ">=4.10.0"
+requests = ">=2.31.0"
+psycopg2-binary = ">=2.9.6"
+
+[build-system]
+requires = ["poetry-core>=1.1.7"]
+build-backend = "poetry.core.masonry.api"

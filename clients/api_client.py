@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from enum import Enum
+from http import HTTPStatus
 from typing import Any
 from typing import Callable
 
@@ -56,75 +56,28 @@ class ApiClient:
         self.auth = auth
 
     @timeout_logging
-    def get(
+    def request(
             self,
+            method: str,
             path: str,
-            headers: Headers | None = None,
-            params: dict | None = None,
-            time_out: int = 180,
-            status_code: int | None = None,
-            cert: tuple[str, str] | None = None,
-            allow_redirects: bool = True,
-    ) -> Response:
-        response = requests.get(
-            url=f'{self.base_url}{path}',
-            params=params,
-            headers=headers.value,
-            timeout=time_out,
-            verify=False,
-            hooks={'response': allure_listener},
-            cert=cert,
-            allow_redirects=allow_redirects,
-        )
-        self.check_status_code(response=response, status_code=status_code)
-        return response
-
-    @timeout_logging
-    def post(
-            self,
-            path: str,
-            headers: Headers,
-            params: dict | None = None,
-            files: dict | list | None = None,
-            data: Any = None,
+            headers: dict,
+            params: dict,
+            data: dict | None = None,
             json: dict | None = None,
-            status_code: int | None = None,
-            time_out: int = 600,
-            cert: tuple[str, str] | None = None,
+            files: dict | list | None = None,
             allow_redirects: bool = True,
-    ) -> Response:
-        response = requests.post(
+            verify: bool = False,
+            status_code: int = HTTPStatus.OK,
+    ):
+        """ Send HTTP-request """
+        response = requests.request(
+            method=method,
             url=f'{self.base_url}{path}',
-            params=params,
-            headers=headers.value,
-            timeout=time_out,
+            headers=headers, params=params,
+            data=data, json=json,
             files=files,
-            data=data,
-            json=json,
-            verify=False,
             allow_redirects=allow_redirects,
-            hooks={'response': allure_listener},
-            cert=cert,
-        )
-        self.check_status_code(response=response, status_code=status_code)
-        return response
-
-    @timeout_logging
-    def delete(
-            self,
-            path: str,
-            headers: Headers,
-            status_code: int | None = None,
-            time_out: int = 180,
-            cert: tuple[str, str] | None = None,
-    ) -> Response:
-        response = requests.delete(
-            url=f'{self.base_url}{path}',
-            headers=headers.value,
-            timeout=time_out,
-            verify=False,
-            hooks={'response': allure_listener},
-            cert=cert,
+            verify=verify
         )
         self.check_status_code(response=response, status_code=status_code)
         return response
@@ -135,9 +88,3 @@ class ApiClient:
             assert response.status_code == status_code, \
                 f"""Wrong status code, expected: {status_code}, received: {response.status_code}, 
                 message: {response.text}"""
-
-
-class Headers(Enum):
-    NONE_TYPE = None
-    JSON_TYPE = {'Content-Type': 'application/json'}
-    XML_TYPE = {'X-Requested-With': 'XMLHttpRequest'}
