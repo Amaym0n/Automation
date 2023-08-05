@@ -5,7 +5,7 @@ import allure
 import pytest
 from _pytest.fixtures import SubRequest
 
-from basic_helper.object_description import StandConfig
+from helpers.object_description import StandConfig
 from conftest import PROJECT_ROOT
 
 

@@ -8,7 +8,7 @@ import allure
 import requests
 from requests import Response
 
-from basic_helper.object_description import StandConfig
+from helpers.object_description import StandConfig
 from clients.auth.jwt_auth import JWTAuth
 
 
