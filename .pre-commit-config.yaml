@@ -1,20 +1,4 @@
-default_language_version:
-  python: "3.11"
 repos:
-  - repo: https://github.com/asottile/pyupgrade
-    rev: v3.3.1
-    hooks:
-      - id: pyupgrade
-        args: [ --py37-plus ]
-  - repo: https://github.com/asottile/reorder_python_imports
-    rev: v3.9.0
-    hooks:
-      - id: reorder-python-imports
-        args: [ --py37-plus ]
-  - repo: https://github.com/pre-commit/pygrep-hooks
-    rev: v1.10.0
-    hooks:
-      - id: python-use-type-annotations
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.4.0
     hooks:
@@ -22,15 +6,33 @@ repos:
       - id: end-of-file-fixer
       - id: fix-encoding-pragma
         args: [ --remove ]
-      - id: check-yaml
       - id: debug-statements
-      - id: name-tests-test
-      - id: pretty-format-json
-      - id: check-json
-      - id: check-byte-order-marker
         language_version: python3
+      - id: name-tests-test
+        args: [ --pytest-test-first ]
+      - id: pretty-format-json
+        args: [ --autofix ]
+  - repo: https://github.com/pre-commit/pygrep-hooks
+    rev: v1.10.0
+    hooks:
+      - id: python-use-type-annotations
+      - id: python-no-eval
+  - repo: https://github.com/asottile/add-trailing-comma
+    rev: v2.4.0
+    hooks:
+      - id: add-trailing-comma
+  - repo: https://github.com/asottile/pyupgrade
+    rev: v3.4.0
+    hooks:
+      - id: pyupgrade
+        args: [ --py37-plus ]
+  - repo: https://github.com/asottile/reorder-python-imports
+    rev: v3.9.0
+    hooks:
+      - id: reorder-python-imports
+        args: [ --py37-plus ]
   - repo: https://github.com/PyCQA/autoflake
-    rev: v2.1.0
+    rev: v2.1.1
     hooks:
       - id: autoflake
         name: autoflake
@@ -43,13 +45,3 @@ repos:
       - id: flake8
         language_version: python3
         args: [ "--max-line-length=120" ]
-  - repo: local
-    hooks:
-      - id: pytest
-        name: pytest
-        entry: venv/bin/pytest
-        language: script
-        pass_filenames: false
-        # alternatively you could `types: [python]` so it only runs when python files change
-        # though tests might be invalidated if you were to say change a data file
-        always_run: true
